@@ -5,9 +5,9 @@ set -e
 cd build
 
 CFLAGS="$COMMON_CFLAGS" ../source/configure \
-  --prefix=/usr \
+  --prefix=$LFS/usr \
   --host=$LFS_TARGET \
-  --build=$(../source/scripts/config.guess) \
+  --build=${LFS_HOST} \
   --enable-kernel=5.15 \
   --disable-profile \
   --enable-bind-now \
@@ -15,4 +15,4 @@ CFLAGS="$COMMON_CFLAGS" ../source/configure \
   --with-headers=$LFS/usr/include
 
 sudo make -j$(nproc)
-sudo make DESTDIR=$LFS install
+sudo make install
