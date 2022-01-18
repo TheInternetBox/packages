@@ -24,10 +24,13 @@ jobs:
         submodules: recursive
 
     # TODO: Strip these deps down at a later date
+    # TODO: Move linux repo to TheInternetBox
     - name: Setup build dependencies
       run: |
         sudo apt update
         sudo apt install -y lsb-release wget software-properties-common build-essential gcc-aarch64-linux-gnu xz-utils
+
+        git clone -b rpi-router https://github.com/USA-RedDragon/linux /tmp/linux
 
     - name: Install and symlink LLVM tools to sane names
       env:

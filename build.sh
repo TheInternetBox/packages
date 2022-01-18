@@ -22,8 +22,8 @@ function build() {
 # Kernel Headers
 if [[ "$(basename $LFS)" =~ ^lfs.* ]]; then
   DEFCONFIG="rpi_cm4_io_router_defconfig"
-  KBUILD_BUILD_TIMESTAMP='' make -C ../../boot-image/linux ARCH=arm64 CC="ccache clang" LLVM=1 CROSS_COMPILE=aarch64-linux-gnu- ${DEFCONFIG}
-  KBUILD_BUILD_TIMESTAMP='' sudo make -C ../../boot-image/linux ARCH=arm64 CC="ccache clang" LLVM=1 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_HDR_PATH=$LFS/usr headers_install
+  KBUILD_BUILD_TIMESTAMP='' make -C /tmp/linux ARCH=arm64 CC="ccache clang" LLVM=1 CROSS_COMPILE=aarch64-linux-gnu- ${DEFCONFIG}
+  KBUILD_BUILD_TIMESTAMP='' sudo make -C /tmp/linux ARCH=arm64 CC="ccache clang" LLVM=1 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_HDR_PATH=$LFS/usr headers_install
 fi
 
 # glibc must come first
