@@ -5,7 +5,7 @@ name: 'Submodule notify parent'
 on:
   push:
     branches:
-      - rpi-router    
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,9 +24,9 @@ jobs:
     - name: Notify parent
       env:
         GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-        PARENT_REPO: USA-RedDragon/rpi-router
+        PARENT_REPO: TheInternetBox/core
         PARENT_BRANCH: main
         # Obtained via curl -X GET -H "Authorization: token $PAT" https://api.github.com/repos/$PARENT_REPO/actions/workflows
-        WORKFLOW_ID: '18042942'
+        WORKFLOW_ID: '18159142'
       run: |
         curl -fL --retry 3 -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ env.GITHUB_TOKEN }}" https://api.github.com/repos/${{ env.PARENT_REPO }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches -d '{"ref":"${{ env.PARENT_BRANCH }}"}'
