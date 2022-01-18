@@ -1,0 +1,57 @@
+name: 'Build Sanity Test'
+
+on:
+  pull_request:
+  push:
+    branches:    
+    - main
+
+jobs:
+  build:
+    name: 'Build'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.4.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        submodules: recursive
+
+    # TODO: Strip these deps down at a later date
+    - name: Setup build dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y lsb-release wget software-properties-common build-essential gcc-aarch64-linux-gnu xz-utils
+
+    - name: Install and symlink LLVM tools to sane names
+      env:
+        LLVM_VERSION: 13
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        # no-op is used because this script has a bug
+        # where `llvm.sh: line 40: $2: unbound variable`
+        sudo bash llvm.sh ${LLVM_VERSION} no-op
+        sudo ln -sf $(which ld.lld-${LLVM_VERSION}) /usr/bin/ld.lld
+        sudo ln -sf $(which llvm-objdump-${LLVM_VERSION}) /usr/bin/llvm-objdump
+        sudo ln -sf $(which llvm-objcopy-${LLVM_VERSION}) /usr/bin/llvm-objcopy
+        sudo ln -sf $(which llvm-nm-${LLVM_VERSION}) /usr/bin/llvm-nm
+        sudo ln -sf $(which llvm-ar-${LLVM_VERSION}) /usr/bin/llvm-ar
+        sudo ln -sf $(which llvm-strip-${LLVM_VERSION}) /usr/bin/llvm-strip
+
+    - name: Build packages
+      run: |
+        ./build.sh
+
+    - name: Build debug packages
+      env:
+        DEBUG: 'true'
+      run: |
+        ./build.sh
+

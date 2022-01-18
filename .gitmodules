@@ -1,0 +1,17 @@
+# CI requires branch to be defined
+[submodule "bash"]
+	path = bash/source
+	url = https://git.savannah.gnu.org/git/bash.git
+	branch = refs/tags/bash-5.1
+[submodule "glibc"]
+	path = glibc/source
+	url = https://sourceware.org/git/glibc.git
+	branch = release/2.34/master
+[submodule "readline"]
+	path = readline/source
+	url = https://git.savannah.gnu.org/cgit/readline.git
+	branch = readline-8.1
+[submodule "ncurses"]
+	path = ncurses/source
+	url = https://github.com/ThomasDickey/ncurses-snapshots
+	branch = master
