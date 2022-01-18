@@ -9,7 +9,7 @@
 	branch = release/2.34/master
 [submodule "readline"]
 	path = readline/source
-	url = https://git.savannah.gnu.org/cgit/readline.git
+	url = https://git.savannah.gnu.org/git/readline.git
 	branch = readline-8.1
 [submodule "ncurses"]
 	path = ncurses/source
