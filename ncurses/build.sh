@@ -9,8 +9,6 @@ CFLAGS="$COMMON_CFLAGS" CPPFLAGS="$COMMON_CFLAGS" ../source/configure \
   --build=${LFS_HOST} \
   --host=${LFS_TARGET} \
   --libdir=$LFS/usr/lib \
-  --with-build-cflags="$TARGET_CFLAGS" \
-  --with-build-cppflags="$TARGET_CFLAGS" \
   --with-shared \
   --without-debug \
   --enable-pc-files \
