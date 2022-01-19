@@ -27,14 +27,16 @@ jobs:
     - name: Setup build dependencies
       run: |
         sudo apt update
-        sudo apt install -y lsb-release wget software-properties-common build-essential gcc-aarch64-linux-gnu xz-utils
+        sudo apt install -y lsb-release wget software-properties-common build-essential xz-utils
 
         git clone -b internetbox https://github.com/TheInternetBox/linux /tmp/linux
 
-    - name: Install and symlink LLVM tools to sane names
+    - name: Install and symlink compiler tools to sane names
       env:
         LLVM_VERSION: 13
+        GCC_VERSION: 10
       run: |
+        sudo apt install -y gcc-$GCC_VERSION-aarch64-linux-gnu g++-$GCC_VERSION-aarch64-linux-gnu
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
         # no-op is used because this script has a bug
@@ -46,6 +48,13 @@ jobs:
         sudo ln -sf $(which llvm-nm-${LLVM_VERSION}) /usr/bin/llvm-nm
         sudo ln -sf $(which llvm-ar-${LLVM_VERSION}) /usr/bin/llvm-ar
         sudo ln -sf $(which llvm-strip-${LLVM_VERSION}) /usr/bin/llvm-strip
+        sudo ln -sf $(which clang-${LLVM_VERSION}) /usr/bin/clang
+        sudo ln -sf $(which clang++-${LLVM_VERSION}) /usr/bin/clang++
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc aarch64-linux-gnu-gcc /usr/bin/aarch64-linux-gnu-gcc-$GCC_VERSION $GCC_VERSION
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc-ranlib aarch64-linux-gnu-gcc-ranlib /usr/bin/aarch64-linux-gnu-gcc-ranlib-$GCC_VERSION $GCC_VERSION
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc-ar aarch64-linux-gnu-gcc-ar /usr/bin/aarch64-linux-gnu-gcc-ar-$GCC_VERSION $GCC_VERSION
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-gcc-nm aarch64-linux-gnu-gcc-nm /usr/bin/aarch64-linux-gnu-gcc-nm-$GCC_VERSION $GCC_VERSION
+        sudo update-alternatives --install /usr/bin/aarch64-linux-gnu-g++ aarch64-linux-gnu-g++ /usr/bin/aarch64-linux-gnu-g++-$GCC_VERSION $GCC_VERSION
 
     - name: Build packages
       run: |
